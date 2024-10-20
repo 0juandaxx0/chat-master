@@ -20,6 +20,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,12 +54,6 @@ class HomePage extends StatelessWidget {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              // Acción del botón de edición
-            },
-          ),
         ],
       ),
       body: Padding(
@@ -87,7 +82,7 @@ class HomePage extends StatelessWidget {
                     name: 'Julian',
                     code: '123',
                     description: 'Chatea conmigo.',
-                  )
+                  ),
                 ],
               ),
             ),
@@ -127,38 +122,38 @@ class UserTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 2, // Sombra para dar profundidad
-        margin: const EdgeInsets.symmetric(vertical: 5), // Espaciado vertical
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.purple[100], // Color de fondo del avatar
-            child: const Icon(Icons.person,
-                color: Colors.white), // Icono de usuario
+      elevation: 2, // Sombra para dar profundidad
+      margin: const EdgeInsets.symmetric(vertical: 5), // Espaciado vertical
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.purple[100], // Color de fondo del avatar
+          child: const Icon(Icons.person, color: Colors.white), // Icono de usuario
+        ),
+        title: Text(
+          '$name ($code)',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold, // Negrita para el nombre
           ),
-          title: Text(
-            '$name ($code)',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold, // Negrita para el nombre
+        ),
+        subtitle: Text(
+          description,
+          style: const TextStyle(
+            color: Colors.grey, // Color gris para la descripción
+          ),
+        ),
+        trailing:
+            const Icon(Icons.more_vert, color: Colors.purple), // Icono de más
+        onTap: () {
+          // Cuando se toca el ListTile, navega a la pantalla de chat.
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(userName: name),
             ),
-          ),
-          subtitle: Text(
-            description,
-            style: const TextStyle(
-              color: Colors.grey, // Color gris para la descripción
-            ),
-          ),
-          trailing:
-              const Icon(Icons.more_vert, color: Colors.purple), // Icono de más
-          onTap: () {
-            // Cuando se toca el ListTile, navega a la pantalla de chat.
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChatPage(userName: name),
-              ),
-            );
-          },
-        ));
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -198,7 +193,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Configuraciones de UberChat'),
+        title: const Text('Configuraciones de Timogram'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -248,13 +243,11 @@ class SettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-              height: 10), // Espacio entre el encabezado y las opciones
+          const SizedBox(height: 10), // Espacio entre el encabezado y las opciones
           const SettingsOptionTile(
             icon: Icons.notifications,
             title: 'Notificaciones',
-            description:
-                'Configura las preferencias de notificación para la app.',
+            description: 'Configura las preferencias de notificación para la app.',
           ),
           const SettingsOptionTile(
             icon: Icons.person_outline,
@@ -264,8 +257,7 @@ class SettingsPage extends StatelessWidget {
           const SettingsOptionTile(
             icon: Icons.lock,
             title: 'Privacidad',
-            description:
-                'Gestiona tus configuraciones de privacidad y seguridad.',
+            description: 'Gestiona tus configuraciones de privacidad y seguridad.',
           ),
           const SettingsOptionTile(
             icon: Icons.language,
@@ -315,11 +307,9 @@ class SettingsOptionTile extends StatelessWidget {
           ),
         ),
         subtitle: Text(description),
-        trailing: const Icon(Icons.arrow_forward_ios), // Flecha hacia adelante
         onTap: () {
-          // Acción al tocar el tile (puedes definir lo que hace)
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Acción para $title')),
+            SnackBar(content: Text('Configuración de $title seleccionada')),
           );
         },
       ),
@@ -327,220 +317,94 @@ class SettingsOptionTile extends StatelessWidget {
   }
 }
 
-// Pantalla de añadir contacto
-class AddContactPage extends StatelessWidget {
-  const AddContactPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController numberController = TextEditingController();
-    final TextEditingController emailController = TextEditingController();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Añadir contacto'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'NOMBRE',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20, // Tamaño de fuente mayor
-                color: Colors.purple, // Color atractivo
-              ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                labelText: 'Nombre del contacto',
-                hintText: 'Ingresa el nombre',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                prefixIcon: const Icon(Icons.person), // Icono de persona
-                filled: true, // Fondo del campo
-                fillColor: Colors.purple[50], // Color de fondo suave
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'NÚMERO',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20, // Tamaño de fuente mayor
-                color: Colors.purple, // Color atractivo
-              ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: numberController,
-              decoration: InputDecoration(
-                labelText: 'Número de contacto',
-                hintText: 'Ingresa el número',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                prefixIcon: const Icon(Icons.phone), // Icono de teléfono
-                filled: true, // Fondo del campo
-                fillColor: Colors.purple[50], // Color de fondo suave
-              ),
-              keyboardType:
-                  TextInputType.phone, // Teclado para número de teléfono
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'CORREO',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20, // Tamaño de fuente mayor
-                color: Colors.purple, // Color atractivo
-              ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'Correo del contacto',
-                hintText: 'Ingresa el correo',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                prefixIcon: const Icon(Icons.email), // Icono de correo
-                filled: true, // Fondo del campo
-                fillColor: Colors.purple[50], // Color de fondo suave
-              ),
-              keyboardType:
-                  TextInputType.emailAddress, // Teclado para correo electrónico
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                addContact(
-                  nameController.text,
-                  numberController.text,
-                  emailController.text,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Contacto añadido')),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple, // Color del botón
-                foregroundColor: Colors.white, // Color del texto del botón
-                padding: const EdgeInsets.symmetric(
-                    vertical: 12), // Padding del botón
-              ),
-              child: const Text('Añadir Contacto'), // Texto del botón
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-void addContact(String name, String number, String email) {
-  FirebaseFirestore.instance.collection('contacts').add({
-    'name': name,
-    'number': number,
-    'email': email,
-  }).then((value) {
-    print("Contact Added");
-  }).catchError((error) {
-    print("Failed to add contact: $error");
-  });
-}
-
-// Pantalla de Chat
 class ChatPage extends StatefulWidget {
-  final String userName; // El nombre del usuario con quien se está chateando.
+  final String userName;
 
   const ChatPage({super.key, required this.userName});
 
   @override
-  // ignore: library_private_types_in_public_api
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final List<String> messages = []; // Lista para almacenar mensajes.
-  final TextEditingController _controller =
-      TextEditingController(); // Controlador para el TextField.
+  final _messageController = TextEditingController();
+  final currentUser = FirebaseAuth.instance.currentUser;
+  final _scrollController = ScrollController();
 
   void _sendMessage() {
-    if (_controller.text.isNotEmpty) {
-      setState(() {
-        messages.add(_controller.text); // Agregar mensaje a la lista.
-        _controller.clear(); // Limpiar el TextField.
-      });
-    }
+    final message = _messageController.text.trim();
+    if (message.isEmpty) return;
+
+    FirebaseFirestore.instance.collection('messages').add({
+      'text': message,
+      'createdAt': Timestamp.now(),
+      'userId': currentUser!.uid,
+      'userName': widget.userName,
+    });
+
+    _messageController.clear();
+    _scrollToBottom();
+  }
+
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat con ${widget.userName}'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        title: Text(widget.userName),
+        backgroundColor: Colors.purple,
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                return ChatBubble(
-                  message: messages[index],
-                  isSentByMe:
-                      true, // Suponemos que todos los mensajes son enviados por el usuario actual
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('messages')
+                  .orderBy('createdAt', descending: true)
+                  .snapshots(),
+              builder: (ctx, AsyncSnapshot<QuerySnapshot> chatSnapshot) {
+                if (chatSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final chatDocs = chatSnapshot.data!.docs;
+                return ListView.builder(
+                  reverse: true,
+                  controller: _scrollController,
+                  itemCount: chatDocs.length,
+                  itemBuilder: (ctx, index) => MessageBubble(
+                    chatDocs[index]['text'],
+                    chatDocs[index]['userId'] == currentUser!.uid,
+                    chatDocs[index]['userName'],
+                  ),
                 );
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          Container(
+            padding: const EdgeInsets.all(8),
+            color: Colors.purple[50],
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Escribe un mensaje...',
-                      filled: true, // Color de fondo del campo de texto
-                      fillColor: Colors.purple[50], // Color de fondo claro
-                      border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(20), // Bordes redondeados
-                        borderSide: BorderSide.none, // Sin bordes visibles
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 15),
+                    controller: _messageController,
+                    decoration: const InputDecoration(
+                      labelText: 'Escribe un mensaje...',
                     ),
                   ),
                 ),
                 IconButton(
+                  color: Colors.purple,
                   icon: const Icon(Icons.send),
-                  onPressed:
-                      _sendMessage, // Llamar a la función para enviar el mensaje.
-                  color: Colors.purple, // Color del ícono de enviar
-                ),
+                  onPressed: _sendMessage,
+                )
               ],
             ),
           ),
@@ -550,40 +414,56 @@ class _ChatPageState extends State<ChatPage> {
   }
 }
 
-// Clase ChatBubble
-class ChatBubble extends StatelessWidget {
+class MessageBubble extends StatelessWidget {
   final String message;
-  final bool isSentByMe;
+  final bool isMe;
+  final String userName;
 
-  const ChatBubble(
-      {super.key, required this.message, required this.isSentByMe});
+  const MessageBubble(this.message, this.isMe, this.userName, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        decoration: BoxDecoration(
-          color: isSentByMe ? Colors.blue[100] : Colors.grey[300],
-          borderRadius: BorderRadius.circular(15), // Bordes más redondeados
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1), // Sombra sutil
-              blurRadius: 5,
-              offset: const Offset(0, 2), // Desplazamiento de la sombra
+    return Row(
+      mainAxisAlignment:
+          isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: isMe ? Colors.purple[200] : Colors.purple[100],
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(12),
+              topRight: const Radius.circular(12),
+              bottomLeft:
+                  !isMe ? const Radius.circular(0) : const Radius.circular(12),
+              bottomRight:
+                  isMe ? const Radius.circular(0) : const Radius.circular(12),
             ),
-          ],
-        ),
-        child: Text(
-          message,
-          style: TextStyle(
-            fontSize: 16, // Tamaño de fuente mayor
-            color: isSentByMe ? Colors.black : Colors.black87,
+          ),
+          width: 140,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: Column(
+            crossAxisAlignment:
+                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
+              Text(
+                userName,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              Text(
+                message,
+                style: const TextStyle(
+                  color: Colors.black87,
+                ),
+                textAlign: isMe ? TextAlign.end : TextAlign.start,
+              ),
+            ],
           ),
         ),
-      ),
+      ],
     );
   }
 }

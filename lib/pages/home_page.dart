@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/pages/add_contact_page.dart';
 import '../add_contact_page.dart'; // Ajusta el path si es necesario
 import 'login_page.dart';
 
