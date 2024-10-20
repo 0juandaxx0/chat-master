@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "736208100966",
+    "project_id": "chat-uber-361a7",
+    "storage_bucket": "chat-uber-361a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736208100966:android:becaea17358a15108717a7",
+        "android_client_info": {
+          "package_name": "com.example.Chat_Uber"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN1kK0gclpGDEuzbRaArhFk6GSiFpOFgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
