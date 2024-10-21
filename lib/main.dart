@@ -127,7 +127,8 @@ class UserTile extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.purple[100], // Color de fondo del avatar
-          child: const Icon(Icons.person, color: Colors.white), // Icono de usuario
+          child:
+              const Icon(Icons.person, color: Colors.white), // Icono de usuario
         ),
         title: Text(
           '$name ($code)',
@@ -243,11 +244,13 @@ class SettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 10), // Espacio entre el encabezado y las opciones
+          const SizedBox(
+              height: 10), // Espacio entre el encabezado y las opciones
           const SettingsOptionTile(
             icon: Icons.notifications,
             title: 'Notificaciones',
-            description: 'Configura las preferencias de notificación para la app.',
+            description:
+                'Configura las preferencias de notificación para la app.',
           ),
           const SettingsOptionTile(
             icon: Icons.person_outline,
@@ -257,7 +260,8 @@ class SettingsPage extends StatelessWidget {
           const SettingsOptionTile(
             icon: Icons.lock,
             title: 'Privacidad',
-            description: 'Gestiona tus configuraciones de privacidad y seguridad.',
+            description:
+                'Gestiona tus configuraciones de privacidad y seguridad.',
           ),
           const SettingsOptionTile(
             icon: Icons.language,
@@ -316,6 +320,8 @@ class SettingsOptionTile extends StatelessWidget {
     );
   }
 }
+
+//pantalla de chat
 
 class ChatPage extends StatefulWidget {
   final String userName;
@@ -414,6 +420,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 }
 
+//chat bubble
+
 class MessageBubble extends StatelessWidget {
   final String message;
   final bool isMe;
@@ -424,8 +432,7 @@ class MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment:
-          isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
           decoration: BoxDecoration(
