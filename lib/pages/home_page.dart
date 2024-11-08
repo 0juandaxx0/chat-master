@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/main.dart' as main_app;
 import 'package:flutter_application_1/pages/add_contact_page.dart';
-import '../add_contact_page.dart'; // Ajusta el path si es necesario
+import '../main.dart';
 import 'login_page.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,7 +24,17 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('UberChat'),
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.orange, Colors.yellow],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -99,7 +110,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.orange,
         onPressed: () async {
           await Navigator.push(
             context,
@@ -115,18 +126,18 @@ class _HomePageState extends State<HomePage> {
   ListTile _buildContactTile(DocumentSnapshot contact, BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: Colors.purple[100],
+        backgroundColor: Colors.orange[100],
         child: const Icon(Icons.person, color: Colors.white),
       ),
       title: Text(contact['name']),
       subtitle:
           Text('Número: ${contact['number']}\nCorreo: ${contact['email']}'),
-      trailing: const Icon(Icons.chat, color: Colors.purple),
+      trailing: const Icon(Icons.chat, color: Colors.orange),
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ChatPage(userName: contact['name']),
+            builder: (context) => main_app.ChatPage(userName: contact['name']),
           ),
         );
       },
@@ -142,14 +153,15 @@ class SearchBar extends StatelessWidget {
     return TextField(
       decoration: InputDecoration(
         hintText: 'Buscar...',
-        prefixIcon: const Icon(Icons.search, color: Colors.purple),
+        prefixIcon: const Icon(Icons.search, color: Colors.orange),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide.none,
         ),
         filled: true,
-        fillColor: Colors.purple[50],
+        fillColor: Colors.orange[50],
       ),
     );
   }
 }
+

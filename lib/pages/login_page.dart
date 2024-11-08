@@ -7,7 +7,6 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -47,10 +46,9 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Iniciar sesión'),
-        backgroundColor: Colors.white, // Cambia el color del AppBar
+        backgroundColor: Colors.orange[700], // Fondo de AppBar con color naranja
       ),
       body: SingleChildScrollView(
-        // Para evitar problemas de desplazamiento en pantallas pequeñas
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -63,8 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color:
-                        Colors.purple[300], // Añadir color al texto principal
+                    color: Colors.orange[600], // Color de texto en naranja
                   ),
                 ),
               ),
@@ -90,10 +87,10 @@ class _LoginPageState extends State<LoginPage> {
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.email_outlined), // Añadir icono
+                  prefixIcon: const Icon(Icons.email_outlined),
                   hintText: 'Introduce tu email',
                   filled: true,
-                  fillColor: Colors.grey[100],
+                  fillColor: Colors.yellow[100], // Fondo amarillo para el campo
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -114,11 +111,10 @@ class _LoginPageState extends State<LoginPage> {
                 controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  prefixIcon:
-                      const Icon(Icons.lock_outline), // Icono de candado
+                  prefixIcon: const Icon(Icons.lock_outline),
                   hintText: 'Introduce tu contraseña',
                   filled: true,
-                  fillColor: Colors.grey[100],
+                  fillColor: Colors.yellow[100], // Fondo amarillo para el campo
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -134,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text(
                     '¿Olvidaste tu contraseña?',
                     style: TextStyle(
-                      color: Colors.purple, // Color del texto
+                      color: Colors.orange, // Texto en naranja para el botón
                     ),
                   ),
                 ),
@@ -143,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: _login,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple[200], // Color del botón
+                  backgroundColor: Colors.orange[600], // Botón en color naranja
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -216,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                         TextSpan(
                           text: 'Regístrate',
                           style: TextStyle(
-                            color: Colors.purple,
+                            color: Colors.orange,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
