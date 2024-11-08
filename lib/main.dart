@@ -62,7 +62,8 @@ class _HomePageState extends State<HomePage> {
             color: Colors.yellow,
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Función de edición en desarrollo')),
+                const SnackBar(
+                    content: Text('Función de edición en desarrollo')),
               );
             },
           ),
@@ -176,7 +177,8 @@ class _ChatPageState extends State<ChatPage> {
                       title: Text(message['text']),
                       subtitle: Text('Enviado por ${message['sender']}'),
                       onLongPress: () {
-                        _showMessageOptions(context, message.id, message['text']);
+                        _showMessageOptions(
+                            context, message.id, message['text']);
                       },
                     );
                   },
@@ -213,7 +215,8 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  void _showMessageOptions(BuildContext context, String messageId, String currentText) {
+  void _showMessageOptions(
+      BuildContext context, String messageId, String currentText) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -255,8 +258,10 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  void _showEditMessageDialog(BuildContext context, String messageId, String currentText) {
-    TextEditingController editController = TextEditingController(text: currentText);
+  void _showEditMessageDialog(
+      BuildContext context, String messageId, String currentText) {
+    TextEditingController editController =
+        TextEditingController(text: currentText);
 
     showDialog(
       context: context,

@@ -22,7 +22,10 @@ class _ChatPageState extends State<ChatPage> {
     if (_controller.text.isNotEmpty) {
       if (_editingMessageId != null) {
         // Editando un mensaje existente
-        await FirebaseFirestore.instance.collection('messages').doc(_editingMessageId).update({
+        await FirebaseFirestore.instance
+            .collection('messages')
+            .doc(_editingMessageId)
+            .update({
           'text': _controller.text,
           'timestamp': FieldValue.serverTimestamp(),
         });
@@ -174,8 +177,8 @@ class _ChatPageState extends State<ChatPage> {
                                         .toDate()
                                         .toString()
                                     : '',
-                                style: TextStyle(
-                                    fontSize: 10, color: Colors.grey),
+                                style:
+                                    TextStyle(fontSize: 10, color: Colors.grey),
                               ),
                             ],
                           ),
