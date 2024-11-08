@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +25,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.light(
-          primary: Colors.purple[100]!,
+        colorScheme: const ColorScheme.light(
+          primary: Colors.orange,
         ),
       ),
       home: const LoginPage(), // Pantalla inicial de la app
@@ -44,7 +42,15 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Timogram'),
-        backgroundColor: Colors.purple, // Cambiar el color de fondo del AppBar
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.orange, Colors.yellow],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -58,26 +64,24 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0), // Aumentar el padding
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Alinear el contenido a la izquierda
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SearchBar(),
-            const SizedBox(height: 20), // Espaciado más amplio
+            const SizedBox(height: 20),
             const Text(
               'Usuarios',
               style: TextStyle(
-                fontSize: 24, // Tamaño de fuente más grande
-                fontWeight: FontWeight.bold, // Fuente en negrita
-                color: Colors.purple, // Color de texto
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
               ),
             ),
-            const SizedBox(height: 10), // Espaciado entre el título y la lista
+            const SizedBox(height: 10),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10), // Padding vertical
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 children: const [
                   UserTile(
                     name: 'Julian',
@@ -92,12 +96,12 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navegar a la pantalla de añadir contacto
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddContactPage()),
           );
         },
+        backgroundColor: Colors.orange,
         child: const Icon(
           Icons.add,
           size: 30,
@@ -123,30 +127,23 @@ class UserTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2, // Sombra para dar profundidad
-      margin: const EdgeInsets.symmetric(vertical: 5), // Espaciado vertical
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Colors.purple[100], // Color de fondo del avatar
-          child:
-              const Icon(Icons.person, color: Colors.white), // Icono de usuario
+          backgroundColor: Colors.orange[100],
+          child: const Icon(Icons.person, color: Colors.white),
         ),
         title: Text(
           '$name ($code)',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold, // Negrita para el nombre
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
           description,
-          style: const TextStyle(
-            color: Colors.grey, // Color gris para la descripción
-          ),
+          style: const TextStyle(color: Colors.grey),
         ),
-        trailing:
-            const Icon(Icons.more_vert, color: Colors.purple), // Icono de más
+        trailing: const Icon(Icons.more_vert, color: Colors.orange),
         onTap: () {
-          // Cuando se toca el ListTile, navega a la pantalla de chat.
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -165,22 +162,19 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          const EdgeInsets.symmetric(horizontal: 16.0), // Espaciado horizontal
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: TextField(
         decoration: InputDecoration(
-          filled: true, // Fondo relleno
-          fillColor: Colors.purple[50], // Color de fondo del campo de texto
-          prefixIcon: const Icon(Icons.search,
-              color: Colors.purple), // Icono de búsqueda
+          filled: true,
+          fillColor: Colors.orange[50],
+          prefixIcon: const Icon(Icons.search, color: Colors.orange),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none, // Sin borde
+            borderSide: BorderSide.none,
           ),
           hintText: 'Buscar',
-          hintStyle: const TextStyle(
-              color: Colors.grey), // Color del texto de sugerencia
-          contentPadding: const EdgeInsets.all(16.0), // Padding interno
+          hintStyle: const TextStyle(color: Colors.grey),
+          contentPadding: const EdgeInsets.all(16.0),
         ),
       ),
     );
@@ -196,6 +190,15 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Configuraciones de Timogram'),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.orange, Colors.yellow],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -206,11 +209,10 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8.0),
         children: [
-          // Header de perfil
           Container(
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color: Colors.purple[50],
+              color: Colors.orange[50],
               borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
@@ -226,8 +228,7 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     Text(
                       'Configuraciones',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text('Daniel', style: TextStyle(color: Colors.grey)),
                   ],
@@ -245,13 +246,11 @@ class SettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-              height: 10), // Espacio entre el encabezado y las opciones
+          const SizedBox(height: 10),
           const SettingsOptionTile(
             icon: Icons.notifications,
             title: 'Notificaciones',
-            description:
-                'Configura las preferencias de notificación para la app.',
+            description: 'Configura las preferencias de notificación para la app.',
           ),
           const SettingsOptionTile(
             icon: Icons.person_outline,
@@ -261,8 +260,7 @@ class SettingsPage extends StatelessWidget {
           const SettingsOptionTile(
             icon: Icons.lock,
             title: 'Privacidad',
-            description:
-                'Gestiona tus configuraciones de privacidad y seguridad.',
+            description: 'Gestiona tus configuraciones de privacidad y seguridad.',
           ),
           const SettingsOptionTile(
             icon: Icons.language,
@@ -280,7 +278,6 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-// Clase SettingsOptionTile personalizada
 class SettingsOptionTile extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -298,11 +295,11 @@ class SettingsOptionTile extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(16.0), // Espaciado interno
+        contentPadding: const EdgeInsets.all(16.0),
         leading: CircleAvatar(
           radius: 24,
-          backgroundColor: Colors.purple[100], // Color de fondo
-          child: Icon(icon, size: 28, color: Colors.purple), // Icono
+          backgroundColor: Colors.orange[100],
+          child: Icon(icon, size: 28, color: Colors.orange),
         ),
         title: Text(
           title,
@@ -322,8 +319,7 @@ class SettingsOptionTile extends StatelessWidget {
   }
 }
 
-//pantalla de chat
-
+// Pantalla de chat
 class ChatPage extends StatefulWidget {
   final String userName;
 
@@ -365,8 +361,16 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.userName),
-        backgroundColor: Colors.purple,
+        title: Text('Chat con ${widget.userName}'),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.orange, Colors.yellow],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -376,42 +380,56 @@ class _ChatPageState extends State<ChatPage> {
                   .collection('messages')
                   .orderBy('createdAt', descending: true)
                   .snapshots(),
-              builder: (ctx, AsyncSnapshot<QuerySnapshot> chatSnapshot) {
-                if (chatSnapshot.connectionState == ConnectionState.waiting) {
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                final chatDocs = chatSnapshot.data!.docs;
+                if (!snapshot.hasData) {
+                  return const Center(child: Text('No hay mensajes aún.'));
+                }
+
+                final messages = snapshot.data!.docs;
+
                 return ListView.builder(
                   reverse: true,
                   controller: _scrollController,
-                  itemCount: chatDocs.length,
-                  itemBuilder: (ctx, index) => MessageBubble(
-                    chatDocs[index]['text'],
-                    chatDocs[index]['userId'] == currentUser!.uid,
-                    chatDocs[index]['userName'],
-                  ),
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final message = messages[index];
+                    return MessageBubble(
+                      message: message['text'],
+                      isMe: message['userId'] == currentUser!.uid,
+                    );
+                  },
                 );
               },
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            color: Colors.purple[50],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: const InputDecoration(
-                      labelText: 'Escribe un mensaje...',
+                    decoration: InputDecoration(
+                      hintText: 'Escribe un mensaje...',
+                      filled: true,
+                      fillColor: Colors.orange[50],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                   ),
                 ),
-                IconButton(
-                  color: Colors.purple,
-                  icon: const Icon(Icons.send),
+                const SizedBox(width: 8),
+                FloatingActionButton(
+                  mini: true,
                   onPressed: _sendMessage,
-                )
+                  backgroundColor: Colors.orange,
+                  child: const Icon(Icons.send, color: Colors.white),
+                ),
               ],
             ),
           ),
@@ -421,57 +439,28 @@ class _ChatPageState extends State<ChatPage> {
   }
 }
 
-//chat bubble
-
 class MessageBubble extends StatelessWidget {
   final String message;
   final bool isMe;
-  final String userName;
 
-  const MessageBubble(this.message, this.isMe, this.userName, {super.key});
+  const MessageBubble({super.key, required this.message, required this.isMe});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: isMe ? Colors.purple[200] : Colors.purple[100],
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(12),
-              topRight: const Radius.circular(12),
-              bottomLeft:
-                  !isMe ? const Radius.circular(0) : const Radius.circular(12),
-              bottomRight:
-                  isMe ? const Radius.circular(0) : const Radius.circular(12),
-            ),
-          ),
-          width: 140,
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: Column(
-            crossAxisAlignment:
-                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: [
-              Text(
-                userName,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              Text(
-                message,
-                style: const TextStyle(
-                  color: Colors.black87,
-                ),
-                textAlign: isMe ? TextAlign.end : TextAlign.start,
-              ),
-            ],
-          ),
+    return Align(
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        decoration: BoxDecoration(
+          color: isMe ? Colors.orange[300] : Colors.orange[100],
+          borderRadius: BorderRadius.circular(12),
         ),
-      ],
+        child: Text(
+          message,
+          style: const TextStyle(color: Colors.black),
+        ),
+      ),
     );
   }
 }
