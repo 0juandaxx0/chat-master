@@ -70,6 +70,7 @@ class _AddContactPageState extends State<AddContactPage> {
             Navigator.pop(context);
           },
         ),
+        backgroundColor: Colors.orange, // Naranja en el AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -81,7 +82,7 @@ class _AddContactPageState extends State<AddContactPage> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
-                color: Colors.purple,
+                color: Colors.orange, // Naranja para los textos
               ),
             ),
             const SizedBox(height: 10),
@@ -91,20 +92,20 @@ class _AddContactPageState extends State<AddContactPage> {
                 labelText: 'Nombre del contacto',
                 hintText: 'Ingresa el nombre',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                prefixIcon: const Icon(Icons.person),
+                prefixIcon: const Icon(Icons.person, color: Colors.orange),
                 filled: true,
-                fillColor: Colors.purple[50],
+                fillColor: Colors.orange[50], // Fondo amarillo
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             const Text(
               'NÚMERO',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
-                color: Colors.purple,
+                color: Colors.orange, // Naranja para los textos
               ),
             ),
             const SizedBox(height: 10),
@@ -114,21 +115,21 @@ class _AddContactPageState extends State<AddContactPage> {
                 labelText: 'Número de contacto',
                 hintText: 'Ingresa el número',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                prefixIcon: const Icon(Icons.phone),
+                prefixIcon: const Icon(Icons.phone, color: Colors.orange),
                 filled: true,
-                fillColor: Colors.purple[50],
+                fillColor: Colors.orange[50], // Fondo amarillo
               ),
               keyboardType: TextInputType.phone,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             const Text(
               'CORREO',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
-                color: Colors.purple,
+                color: Colors.orange, // Naranja para los textos
               ),
             ),
             const SizedBox(height: 10),
@@ -138,23 +139,30 @@ class _AddContactPageState extends State<AddContactPage> {
                 labelText: 'Correo del contacto',
                 hintText: 'Ingresa el correo',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                prefixIcon: const Icon(Icons.email),
+                prefixIcon: const Icon(Icons.email, color: Colors.orange),
                 filled: true,
-                fillColor: Colors.purple[50],
+                fillColor: Colors.orange[50], // Fondo amarillo
               ),
               keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: _addContact, // Llama a la función para añadir contacto
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
+                backgroundColor: Colors.orange, // Naranja para el botón
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 5, // Sombra suave
               ),
-              child: const Text('Añadir Contacto'),
+              child: const Text(
+                'Añadir Contacto',
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),
@@ -162,3 +170,4 @@ class _AddContactPageState extends State<AddContactPage> {
     );
   }
 }
+
