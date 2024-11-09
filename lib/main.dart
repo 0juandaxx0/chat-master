@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Import para formatear la hora
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'pages/login_page.dart';
@@ -381,15 +382,10 @@ class _ChatPageState extends State<ChatPage> {
                   .orderBy('createdAt', descending: true)
                   .snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (!snapshot.hasData) {
-                  return const Center(child: Text('No hay mensajes aún.'));
-                }
-
                 final messages = snapshot.data!.docs;
-
                 return ListView.builder(
                   reverse: true,
                   controller: _scrollController,
@@ -399,6 +395,7 @@ class _ChatPageState extends State<ChatPage> {
                     return MessageBubble(
                       message: message['text'],
                       isMe: message['userId'] == currentUser!.uid,
+                      timestamp: message['createdAt'],
                     );
                   },
                 );
@@ -412,23 +409,14 @@ class _ChatPageState extends State<ChatPage> {
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Escribe un mensaje...',
-                      filled: true,
-                      fillColor: Colors.orange[50],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide.none,
-                      ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
-                FloatingActionButton(
-                  mini: true,
+                IconButton(
+                  icon: const Icon(Icons.send, color: Colors.orange),
                   onPressed: _sendMessage,
-                  backgroundColor: Colors.orange,
-                  child: const Icon(Icons.send, color: Colors.white),
                 ),
               ],
             ),
@@ -442,8 +430,20 @@ class _ChatPageState extends State<ChatPage> {
 class MessageBubble extends StatelessWidget {
   final String message;
   final bool isMe;
+  final Timestamp timestamp;
 
-  const MessageBubble({super.key, required this.message, required this.isMe});
+  const MessageBubble({
+    super.key,
+    required this.message,
+    required this.isMe,
+    required this.timestamp,
+  });
+
+  String _formatTimestamp(Timestamp timestamp) {
+    final DateTime dateTime = timestamp.toDate();
+    final DateFormat formatter = DateFormat('hh:mm a');
+    return formatter.format(dateTime);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -456,9 +456,22 @@ class MessageBubble extends StatelessWidget {
           color: isMe ? Colors.orange[300] : Colors.orange[100],
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Text(
-          message,
-          style: const TextStyle(color: Colors.black),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              message,
+              style: const TextStyle(color: Colors.black),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              _formatTimestamp(timestamp),
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 10,
+              ),
+            ),
+          ],
         ),
       ),
     );
