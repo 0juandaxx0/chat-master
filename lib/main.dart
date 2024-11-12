@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/push_nitificaciones_service.dart';
 import 'package:intl/intl.dart'; // Import para formatear la hora
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,12 +10,24 @@ import 'pages/register_page.dart';
 import 'pages/home_page.dart';
 import 'pages/add_contact_page.dart';
 import 'pages/chat_page.dart';
+import 'package:flutter/services.dart';
+// Para copiar al portapapeles
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  await PushNotificationService.initializeApp();
+
+  // Verifica si Firebase ya está inicializado
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    print("Firebase ya estaba inicializado: $e");
+  }
   runApp(const MyApp());
 }
 
@@ -229,7 +242,8 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     Text(
                       'Configuraciones',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text('Daniel', style: TextStyle(color: Colors.grey)),
                   ],
@@ -251,7 +265,8 @@ class SettingsPage extends StatelessWidget {
           const SettingsOptionTile(
             icon: Icons.notifications,
             title: 'Notificaciones',
-            description: 'Configura las preferencias de notificación para la app.',
+            description:
+                'Configura las preferencias de notificación para la app.',
           ),
           const SettingsOptionTile(
             icon: Icons.person_outline,
@@ -261,7 +276,8 @@ class SettingsPage extends StatelessWidget {
           const SettingsOptionTile(
             icon: Icons.lock,
             title: 'Privacidad',
-            description: 'Gestiona tus configuraciones de privacidad y seguridad.',
+            description:
+                'Gestiona tus configuraciones de privacidad y seguridad.',
           ),
           const SettingsOptionTile(
             icon: Icons.language,
@@ -321,6 +337,7 @@ class SettingsOptionTile extends StatelessWidget {
 }
 
 // Pantalla de chat
+
 class ChatPage extends StatefulWidget {
   final String userName;
 
@@ -355,6 +372,84 @@ class _ChatPageState extends State<ChatPage> {
       _scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
+    );
+  }
+
+  // Función para eliminar el mensaje
+  void _deleteMessage(String messageId) async {
+    final confirmation = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Eliminar mensaje'),
+        content:
+            const Text('¿Estás seguro de que deseas eliminar este mensaje?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false); // Cancelar
+            },
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true); // Confirmar eliminación
+            },
+            child: const Text('Eliminar'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmation == true) {
+      await FirebaseFirestore.instance
+          .collection('messages')
+          .doc(messageId)
+          .delete();
+    }
+  }
+
+  // Función para editar el mensaje
+  void _editMessage(String messageId, String currentText) async {
+    _messageController.text = currentText; // Coloca el texto actual en el campo
+
+    final confirmation = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Editar mensaje'),
+        content: TextField(
+          controller: _messageController,
+          decoration: const InputDecoration(hintText: 'Edita tu mensaje'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false); // Cancelar edición
+            },
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              final updatedText = _messageController.text.trim();
+              if (updatedText.isNotEmpty) {
+                FirebaseFirestore.instance
+                    .collection('messages')
+                    .doc(messageId)
+                    .update({'text': updatedText});
+              }
+              Navigator.of(context).pop(true); // Confirmar edición
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Función para copiar al portapapeles
+  void _copyMessage(String messageText) {
+    Clipboard.setData(ClipboardData(text: messageText));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Mensaje copiado al portapapeles')),
     );
   }
 
@@ -396,6 +491,10 @@ class _ChatPageState extends State<ChatPage> {
                       message: message['text'],
                       isMe: message['userId'] == currentUser!.uid,
                       timestamp: message['createdAt'],
+                      messageId: message.id,
+                      onDelete: _deleteMessage,
+                      onEdit: _editMessage,
+                      onCopy: _copyMessage,
                     );
                   },
                 );
@@ -431,12 +530,20 @@ class MessageBubble extends StatelessWidget {
   final String message;
   final bool isMe;
   final Timestamp timestamp;
+  final String messageId;
+  final Function(String) onDelete;
+  final Function(String, String) onEdit;
+  final Function(String) onCopy;
 
   const MessageBubble({
     super.key,
     required this.message,
     required this.isMe,
     required this.timestamp,
+    required this.messageId,
+    required this.onDelete,
+    required this.onEdit,
+    required this.onCopy,
   });
 
   String _formatTimestamp(Timestamp timestamp) {
@@ -447,31 +554,71 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        decoration: BoxDecoration(
-          color: isMe ? Colors.orange[300] : Colors.orange[100],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              message,
-              style: const TextStyle(color: Colors.black),
+    return GestureDetector(
+      onLongPress: () {
+        // Muestra el menú de opciones al mantener presionado
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.edit),
+                  title: const Text('Editar mensaje'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    onEdit(messageId, message);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.delete),
+                  title: const Text('Eliminar mensaje'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    onDelete(messageId);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.copy),
+                  title: const Text('Copiar mensaje'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    onCopy(message);
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 5),
-            Text(
-              _formatTimestamp(timestamp),
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 10,
+          ),
+        );
+      },
+      child: Align(
+        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          decoration: BoxDecoration(
+            color: isMe ? Colors.orange[300] : Colors.orange[100],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                message,
+                style: const TextStyle(color: Colors.black),
               ),
-            ),
-          ],
+              const SizedBox(height: 5),
+              Text(
+                _formatTimestamp(timestamp),
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 10,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
