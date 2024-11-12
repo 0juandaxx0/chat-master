@@ -43,7 +43,10 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _deleteMessage(String messageId) async {
-    await FirebaseFirestore.instance.collection('messages').doc(messageId).delete();
+    await FirebaseFirestore.instance
+        .collection('messages')
+        .doc(messageId)
+        .delete();
   }
 
   void _editMessage(String messageId, String currentText) {
@@ -145,12 +148,15 @@ class _ChatPageState extends State<ChatPage> {
                         });
                       },
                       child: Align(
-                        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                        alignment:
+                            isMe ? Alignment.centerRight : Alignment.centerLeft,
                         child: Container(
                           padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
                           decoration: BoxDecoration(
-                            color: isMe ? Colors.orange[300] : Colors.orange[100],
+                            color:
+                                isMe ? Colors.orange[300] : Colors.orange[100],
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Column(
